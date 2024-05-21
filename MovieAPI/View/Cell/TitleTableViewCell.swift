@@ -14,7 +14,6 @@ class TitleTableViewCell: UITableViewCell {
     private let posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "image")
         imageView.layer.cornerRadius = 10
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -22,7 +21,6 @@ class TitleTableViewCell: UITableViewCell {
     
     private let posterLabel: UILabel = {
         let label = UILabel()
-        label.text = "wdfwvwv"
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -42,6 +40,26 @@ class TitleTableViewCell: UITableViewCell {
     private func setupView() {
         contentView.addSubview(posterImageView)
         contentView.addSubview(posterLabel)
+    }
+    
+    func configure(with model: Movie) {
+        posterLabel.text = model.title
+        if let posterPath = model.posterPath {
+            guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(posterPath)") else {
+                return
+            }
+            let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+                if let error = error {
+                    print("Error loading image: \(error)")
+                    return
+                }
+                guard let data = data, let image = UIImage(data: data) else { return }
+                DispatchQueue.main.async {
+                    self?.posterImageView.image = image
+                }
+            }
+            task.resume()
+        }
     }
 }
 

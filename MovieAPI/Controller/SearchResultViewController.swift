@@ -9,29 +9,28 @@ import UIKit
 
 class SearchResultViewController: UIViewController {
     
-    private let searchView = SearchView()
+    let searchResultView = SearchResultView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupView()
         setupConstraints()
-        view.backgroundColor = .red
     }
     
     private func setupView() {
-        view.addSubview(searchView)
+        view.addSubview(searchResultView)
     }
 }
 
 //MARK: - Constraints
-private extension SearchResultViewController{
+private extension SearchResultViewController {
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            searchView.topAnchor.constraint(equalTo: view.topAnchor),
-            searchView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            searchView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            searchView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            searchResultView.topAnchor.constraint(equalTo: view.topAnchor),
+            searchResultView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            searchResultView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            searchResultView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 }

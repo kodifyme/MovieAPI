@@ -13,8 +13,7 @@ struct MovieResponse: Codable {
 
 struct Movie: Codable {
     let id: Int
-    let title: String
-    let overview: String
+    let title, overview: String
     let posterPath: String?
     
     enum CodingKeys: String, CodingKey {

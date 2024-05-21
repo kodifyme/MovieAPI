@@ -10,6 +10,8 @@
 		12239D372BF5F677003C2B0D /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12239D362BF5F677003C2B0D /* TitleTableViewCell.swift */; };
 		12239D422BF60878003C2B0D /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12239D412BF60878003C2B0D /* Movie.swift */; };
 		12239D462BF60DDE003C2B0D /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12239D452BF60DDE003C2B0D /* SearchResultViewController.swift */; };
+		123FAFE02BFB5FCD00FB492B /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123FAFDF2BFB5FCD00FB492B /* NetworkManager.swift */; };
+		123FAFE22BFB7BC200FB492B /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123FAFE12BFB7BC200FB492B /* SearchResultView.swift */; };
 		126AD5A02BF32BD200E31937 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD59F2BF32BD200E31937 /* AppDelegate.swift */; };
 		126AD5A22BF32BD200E31937 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD5A12BF32BD200E31937 /* SceneDelegate.swift */; };
 		126AD5A92BF32BD300E31937 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 126AD5A82BF32BD300E31937 /* Assets.xcassets */; };
@@ -22,6 +24,8 @@
 		12239D362BF5F677003C2B0D /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
 		12239D412BF60878003C2B0D /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		12239D452BF60DDE003C2B0D /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
+		123FAFDF2BFB5FCD00FB492B /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		123FAFE12BFB7BC200FB492B /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
 		126AD59C2BF32BD200E31937 /* MovieAPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieAPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		126AD59F2BF32BD200E31937 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		126AD5A12BF32BD200E31937 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +63,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		123FAFDE2BFB5FBB00FB492B /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				123FAFDF2BFB5FCD00FB492B /* NetworkManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
 		126AD5932BF32BD200E31937 = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				126AD5B42BF3409D00E31937 /* Application */,
+				123FAFDE2BFB5FBB00FB492B /* Manager */,
 				12239D3B2BF5F9E0003C2B0D /* Model */,
 				126AD5B72BF3814800E31937 /* Controller */,
 				126AD5B82BF3815A00E31937 /* View */,
@@ -120,6 +133,7 @@
 			children = (
 				12239D352BF5F662003C2B0D /* Cell */,
 				126AD5B92BF3816900E31937 /* SearchView.swift */,
+				123FAFE12BFB7BC200FB492B /* SearchResultView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -198,8 +212,10 @@
 				126AD5BA2BF3816900E31937 /* SearchView.swift in Sources */,
 				126AD5B62BF340C600E31937 /* SearchViewController.swift in Sources */,
 				126AD5A02BF32BD200E31937 /* AppDelegate.swift in Sources */,
+				123FAFE02BFB5FCD00FB492B /* NetworkManager.swift in Sources */,
 				12239D422BF60878003C2B0D /* Movie.swift in Sources */,
 				12239D462BF60DDE003C2B0D /* SearchResultViewController.swift in Sources */,
+				123FAFE22BFB7BC200FB492B /* SearchResultView.swift in Sources */,
 				126AD5A22BF32BD200E31937 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,21 +1,21 @@
 //
-//  SearchView.swift
+//  SearchResultView.swift
 //  MovieAPI
 //
-//  Created by KOДИ on 14.05.2024.
+//  Created by KOДИ on 20.05.2024.
 //
 
 import UIKit
 
-class SearchView: UIView {
+class SearchResultView: UIView {
     
     var movies: [Movie] = [] {
         didSet {
-            searchTableView.reloadData()
+            searchResultTableView.reloadData()
         }
     }
     
-    private lazy var searchTableView: UITableView = {
+    private lazy var searchResultTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.identifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -36,23 +36,23 @@ class SearchView: UIView {
     
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        addSubview(searchTableView)
+        addSubview(searchResultTableView)
     }
     
     private func setDelegates() {
-        searchTableView.dataSource = self
-        searchTableView.delegate = self
+        searchResultTableView.dataSource = self
+        searchResultTableView.delegate = self
     }
 }
 
 //MARK: - UITableViewDataSource
-extension SearchView: UITableViewDataSource {
+extension SearchResultView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movies.count
+        movies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TitleTableViewCell.identifier, for: indexPath) as? TitleTableViewCell else {
+        guard let cell = searchResultTableView.dequeueReusableCell(withIdentifier: TitleTableViewCell.identifier, for: indexPath) as? TitleTableViewCell else {
             return UITableViewCell()
         }
         
@@ -63,22 +63,20 @@ extension SearchView: UITableViewDataSource {
 }
 
 //MARK: - UITableViewDelegate
-extension SearchView: UITableViewDelegate {
+extension SearchResultView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         150
     }
 }
 
 //MARK: - Constraints
-private extension SearchView {
+private extension SearchResultView {
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            searchTableView.topAnchor.constraint(equalTo: topAnchor),
-            searchTableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            searchTableView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            searchTableView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            searchResultTableView.topAnchor.constraint(equalTo: topAnchor),
+            searchResultTableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            searchResultTableView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            searchResultTableView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 }
-
-
