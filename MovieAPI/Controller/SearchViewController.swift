@@ -2,18 +2,28 @@
 //  SearchViewController.swift
 //  MovieAPI
 //
-//  Created by KOДИ on 14.05.2024.
+//  Created by KOДИ on 21.05.2024.
 //
 
 import UIKit
 
+protocol SearchViewControllerDelegate: AnyObject {
+    func getMovies(movies: [Movie])
+}
+
 class SearchViewController: UIViewController {
     
-    private let searchView = SearchView()
+    private let networkManager = NetworkManager.shared
+    weak var delegate: SearchViewControllerDelegate?
+    
+    private lazy var searchView: SearchView = {
+        var view = SearchView()
+        delegate = view
+        return view
+    }()
     
     private let searchController: UISearchController = {
-        let resultController = SearchResultViewController()
-        let controller = UISearchController(searchResultsController: resultController)
+        let controller = UISearchController(searchResultsController: nil)
         controller.searchBar.placeholder = "Поиск фильмов"
         controller.obscuresBackgroundDuringPresentation = false
         return controller
@@ -39,12 +49,10 @@ class SearchViewController: UIViewController {
     }
     
     private func fetchPopularMovies() {
-        NetworkManager.shared.fetchPopularMovies { [weak self] result in
+        networkManager.fetchPopularMovies { [weak self] result in
             switch result {
             case .success(let movies):
-                DispatchQueue.main.async {
-                    self?.searchView.movies = movies
-                }
+                self?.delegate?.getMovies(movies: movies)
             case .failure(let error):
                 print(error)
             }
@@ -56,14 +64,10 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let query = searchController.searchBar.text, !query.isEmpty else { return }
-        NetworkManager.shared.searchMovies(query: query) { [weak self] result in
+        networkManager.searchMovies(query: query) { [weak self] result in
             switch result {
             case .success(let movies):
-                DispatchQueue.main.async {
-                    if let resultsController = self?.searchController.searchResultsController as? SearchResultViewController {
-                        resultsController.searchResultView.movies = movies
-                    }
-                }
+                self?.delegate?.getMovies(movies: movies)
             case .failure(let error):
                 print(error)
             }

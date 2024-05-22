@@ -2,22 +2,18 @@
 //  SearchView.swift
 //  MovieAPI
 //
-//  Created by KOДИ on 14.05.2024.
+//  Created by KOДИ on 21.05.2024.
 //
 
 import UIKit
 
 class SearchView: UIView {
     
-    var movies: [Movie] = [] {
-        didSet {
-            searchTableView.reloadData()
-        }
-    }
+    private var movies: [Movie] = []
     
     private lazy var searchTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.identifier)
+        tableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -52,7 +48,7 @@ extension SearchView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TitleTableViewCell.identifier, for: indexPath) as? TitleTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as? SearchTableViewCell else {
             return UITableViewCell()
         }
         
@@ -69,6 +65,12 @@ extension SearchView: UITableViewDelegate {
     }
 }
 
+extension SearchView: SearchViewControllerDelegate {
+    func getMovies(movies: [Movie]) {
+        self.movies = movies
+        self.searchTableView.reloadData()
+    }
+}
 //MARK: - Constraints
 private extension SearchView {
     func setupConstraints() {
@@ -80,5 +82,3 @@ private extension SearchView {
         ])
     }
 }
-
-

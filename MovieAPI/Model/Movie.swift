@@ -8,7 +8,11 @@
 import Foundation
 
 struct MovieResponse: Codable {
-    let results: [Movie]
+    let movies: [Movie]
+    
+    enum CodingKeys: String, CodingKey {
+        case movies = "results"
+    }
 }
 
 struct Movie: Codable {

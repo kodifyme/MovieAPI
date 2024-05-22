@@ -1,13 +1,13 @@
 //
-//  TitleTableViewCell.swift
+//  SearchTableViewCell.swift
 //  MovieAPI
 //
-//  Created by KOДИ on 16.05.2024.
+//  Created by KOДИ on 22.05.2024.
 //
 
 import UIKit
 
-class TitleTableViewCell: UITableViewCell {
+class SearchTableViewCell: UITableViewCell {
     
     static let identifier = "TitleTableViewCell"
     
@@ -43,28 +43,24 @@ class TitleTableViewCell: UITableViewCell {
     }
     
     func configure(with model: Movie) {
+        
         posterLabel.text = model.title
+        
         if let posterPath = model.posterPath {
-            guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(posterPath)") else {
-                return
-            }
-            let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
-                if let error = error {
-                    print("Error loading image: \(error)")
-                    return
-                }
-                guard let data = data, let image = UIImage(data: data) else { return }
-                DispatchQueue.main.async {
+            NetworkManager.shared.fetchImages(posterPath: posterPath) { [weak self] result in
+                switch result {
+                case .success(let image):
                     self?.posterImageView.image = image
+                case .failure(let error):
+                    print(error)
                 }
             }
-            task.resume()
         }
     }
 }
 
 //MARK: - Constraints
-private extension TitleTableViewCell {
+private extension SearchTableViewCell {
     func setupConstraints() {
         NSLayoutConstraint.activate([
             posterImageView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
