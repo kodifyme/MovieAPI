@@ -7,9 +7,14 @@
 
 import UIKit
 
+protocol SearchViewDelegate: AnyObject {
+    func didSelectMovie(_ movie: Movie)
+}
+
 class SearchView: UIView {
     
-    private var movies: [Movie] = []
+    weak var delegate: SearchViewDelegate?
+    private var movies: [Movie] = [] 
     
     private lazy var searchTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -63,8 +68,15 @@ extension SearchView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         150
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let selectedMovie = movies[indexPath.row]
+        delegate?.didSelectMovie(selectedMovie)
+    }
 }
 
+//MARK: - SearchViewControllerDelegate
 extension SearchView: SearchViewControllerDelegate {
     func getMovies(movies: [Movie]) {
         self.movies = movies

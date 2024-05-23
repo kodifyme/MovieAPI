@@ -19,6 +19,7 @@ class SearchViewController: UIViewController {
     private lazy var searchView: SearchView = {
         var view = SearchView()
         delegate = view
+        view.delegate = self
         return view
     }()
     
@@ -72,6 +73,13 @@ extension SearchViewController: UISearchResultsUpdating {
                 print(error)
             }
         }
+    }
+}
+
+//MARK: - SearchViewDelegate
+extension SearchViewController: SearchViewDelegate {
+    func didSelectMovie(_ movie: Movie) {
+        navigationController?.pushViewController(DetailViewController(movie: movie), animated: true)
     }
 }
 
