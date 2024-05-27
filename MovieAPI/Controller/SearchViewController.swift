@@ -7,14 +7,19 @@
 
 import UIKit
 
+// naming
+// вопросы
+
 protocol SearchViewControllerDelegate: AnyObject {
-    func getMovies(movies: [Movie])
+    func updateMovies(movies: [Movie])
 }
 
 class SearchViewController: UIViewController {
     
     private let networkManager = NetworkManager.shared
     weak var delegate: SearchViewControllerDelegate?
+    
+    private var allMovies: [Movie] = []
     
     private lazy var searchView: SearchView = {
         var view = SearchView()
@@ -43,6 +48,7 @@ class SearchViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.searchController = searchController
         searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
     }
     
     private func setupView() {
@@ -53,7 +59,8 @@ class SearchViewController: UIViewController {
         networkManager.fetchPopularMovies { [weak self] result in
             switch result {
             case .success(let movies):
-                self?.delegate?.getMovies(movies: movies)
+                self?.allMovies = movies
+                self?.delegate?.updateMovies(movies: movies)
             case .failure(let error):
                 print(error)
             }
@@ -68,11 +75,17 @@ extension SearchViewController: UISearchResultsUpdating {
         networkManager.searchMovies(query: query) { [weak self] result in
             switch result {
             case .success(let movies):
-                self?.delegate?.getMovies(movies: movies)
+                self?.delegate?.updateMovies(movies: movies)
             case .failure(let error):
                 print(error)
             }
         }
+    }
+}
+
+extension SearchViewController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        delegate?.updateMovies(movies: allMovies)
     }
 }
 

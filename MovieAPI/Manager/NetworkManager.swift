@@ -24,6 +24,7 @@ class NetworkManager {
     }
     
     static let shared = NetworkManager()
+    private let session = URLSession.shared
     
     private init() {}
     
@@ -42,7 +43,7 @@ class NetworkManager {
             .appendingPathComponent(Constants.fileSize)
             .appendingPathComponent(posterPath)
 
-        let task = URLSession.shared.dataTask(with: fullURL) { data, _, error in
+        let task = session.dataTask(with: fullURL) { data, _, error in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -67,7 +68,7 @@ class NetworkManager {
         ]
         
         guard let searchURL = components.url else { return }
-        let task = URLSession.shared.dataTask(with: searchURL) { data, _, error in
+        let task = session.dataTask(with: searchURL) { data, _, error in
             guard let data, error == nil else {
                 if let error {
                     completion(.failure(error))
@@ -93,7 +94,7 @@ class NetworkManager {
         components.queryItems = [URLQueryItem(name: QueryItem.API_KEY, value: Constants.API_KEY)]
         
         guard let popupalURL = components.url else { return }
-        let task = URLSession.shared.dataTask(with: popupalURL) { data, _, error in
+        let task = session.dataTask(with: popupalURL) { data, _, error in
             guard let data, error == nil else {
                 if let error {
                     completion(.failure(error))

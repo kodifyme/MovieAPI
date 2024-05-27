@@ -20,7 +20,7 @@ class DetailViewController: UIViewController {
         return view
     }()
     
-    private var movie: Movie
+    private let movie: Movie
     
     init(movie: Movie) {
         self.movie = movie

@@ -78,7 +78,7 @@ extension SearchView: UITableViewDelegate {
 
 //MARK: - SearchViewControllerDelegate
 extension SearchView: SearchViewControllerDelegate {
-    func getMovies(movies: [Movie]) {
+    func updateMovies(movies: [Movie]) {
         self.movies = movies
         self.searchTableView.reloadData()
     }
