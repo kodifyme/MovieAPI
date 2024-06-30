@@ -36,81 +36,69 @@ class NetworkManager {
         URL(string: Constants.imageURLPath)
     }()
     
-    func fetchImages(posterPath: String, completion: @escaping (Result<UIImage, Error>) -> Void) {
-        guard let baseURL = URL(string: Constants.imageURLPath) else { return }
-
+    func fetchImage(posterPath: String) async throws -> UIImage {
+        guard let baseURL = URL(string: Constants.imageURLPath) else {
+            throw NSError(domain: "Invalid URL", code: -1, userInfo: nil)
+        }
+        
         let fullURL = baseURL
             .appendingPathComponent(Constants.fileSize)
             .appendingPathComponent(posterPath)
-
-        let task = session.dataTask(with: fullURL) { data, _, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-
-            guard let data = data, let image = UIImage(data: data) else { return }
-            DispatchQueue.main.async {
-                completion(.success(image))
-            }
+        
+        let (data, _) = try await session.data(from: fullURL)
+        
+        guard let image = UIImage(data: data) else {
+            throw NSError(domain: "Invalid Image Data", code: -1, userInfo: nil)
         }
-        task.resume()
+        
+        return image
     }
     
-    func searchMovies(query: String, completion: @escaping (Result<[Movie], Error>) -> Void) {
-        guard let mainURL else { return }
+    func searchMovies(query: String) async throws -> [Movie] {
+        guard let mainURL else {
+            throw NSError(domain: "Invalid URL", code: -1, userInfo: nil)
+        }
+        
         let searchURL = mainURL.appending(path: Constants.searchPath)
-        guard var components = URLComponents(url: searchURL, resolvingAgainstBaseURL: true) else { return }
+        guard var components = URLComponents(url: searchURL, resolvingAgainstBaseURL: true) else {
+            throw NSError(domain: "Invalid URL Components", code: -1, userInfo: nil)
+        }
         
         components.queryItems = [
             URLQueryItem(name: QueryItem.API_KEY, value: Constants.API_KEY),
             URLQueryItem(name: QueryItem.query, value: query)
         ]
         
-        guard let searchURL = components.url else { return }
-        let task = session.dataTask(with: searchURL) { data, _, error in
-            guard let data, error == nil else {
-                if let error {
-                    completion(.failure(error))
-                }
-                return
-            }
-            do {
-                let results = try JSONDecoder().decode(MovieResponse.self, from: data)
-                DispatchQueue.main.async {
-                    completion(.success(results.movies))
-                }
-            } catch {
-                completion(.failure(error))
-            }
+        guard let searchURL = components.url else {
+            throw NSError(domain: "Invalid URL", code: -1, userInfo: nil)
         }
-        task.resume()
+        
+        let (data, _) = try await session.data(from: searchURL)
+        let results = try JSONDecoder().decode(MovieResponse.self, from: data)
+        
+        return results.movies
     }
     
-    func fetchPopularMovies(completion: @escaping (Result<[Movie], Error>) -> Void) {
-        guard let mainURL else { return }
+    func fetchPopularMovies() async throws -> [Movie] {
+        guard let mainURL else {
+            throw NSError(domain: "Invalid URL", code: -1, userInfo: nil)
+        }
+        
         let popularURL = mainURL.appending(path: Constants.popularPath)
-        guard var components = URLComponents(url: popularURL, resolvingAgainstBaseURL: true) else { return }
+        guard var components = URLComponents(url: popularURL, resolvingAgainstBaseURL: true) else {
+            throw NSError(domain: "Invalid URL Components", code: -1, userInfo: nil)
+        }
+        
         components.queryItems = [URLQueryItem(name: QueryItem.API_KEY, value: Constants.API_KEY)]
         
-        guard let popupalURL = components.url else { return }
-        let task = session.dataTask(with: popupalURL) { data, _, error in
-            guard let data, error == nil else {
-                if let error {
-                    completion(.failure(error))
-                }
-                return
-            }
-            do {
-                let results = try JSONDecoder().decode(MovieResponse.self, from: data)
-                DispatchQueue.main.async {
-                    completion(.success(results.movies))
-                }
-                print(results.movies)
-            } catch {
-                completion(.failure(error))
-            }
+        guard let popularURL = components.url else {
+            throw NSError(domain: "Invalid URL", code: -1, userInfo: nil)
         }
-        task.resume()
+        
+        let (data, _) = try await session.data(from: popularURL)
+        let results = try JSONDecoder().decode(MovieResponse.self, from: data)
+        
+        return results.movies
     }
 }
+

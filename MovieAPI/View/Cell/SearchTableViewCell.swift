@@ -47,11 +47,11 @@ class SearchTableViewCell: UITableViewCell {
         posterLabel.text = model.title
         
         if let posterPath = model.posterPath {
-            NetworkManager.shared.fetchImages(posterPath: posterPath) { [weak self] result in
-                switch result {
-                case .success(let image):
-                    self?.posterImageView.image = image
-                case .failure(let error):
+            Task {
+                do {
+                    let image = try await NetworkManager.shared.fetchImage(posterPath: posterPath)
+                    self.posterImageView.image = image
+                } catch {
                     print(error)
                 }
             }

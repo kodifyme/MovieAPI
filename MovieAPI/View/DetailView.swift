@@ -65,11 +65,11 @@ extension DetailView: DetailViewControllerDelegate {
     func configure(with movie: Movie) {
         overviewLabel.text = movie.overview
         if let posterPath = movie.posterPath {
-            NetworkManager.shared.fetchImages(posterPath: posterPath) { [weak self] reuslt in
-                switch reuslt {
-                case .success(let image):
-                    self?.posterImageView.image = image
-                case .failure(let error):
+            Task {
+                do {
+                    let image = try await NetworkManager.shared.fetchImage(posterPath: posterPath)
+                    self.posterImageView.image = image
+                } catch {
                     print(error)
                 }
             }

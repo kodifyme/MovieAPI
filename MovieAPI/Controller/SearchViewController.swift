@@ -38,7 +38,7 @@ class SearchViewController: UIViewController {
         setupNavigationBar()
         setupView()
         setupConstraints()
-        fetchPopularMovies()
+        loadPopularMovies()
     }
     
     private func setupNavigationBar() {
@@ -53,13 +53,13 @@ class SearchViewController: UIViewController {
         view.addSubview(searchView)
     }
     
-    private func fetchPopularMovies() {
-        networkManager.fetchPopularMovies { [weak self] result in
-            switch result {
-            case .success(let movies):
-                self?.allMovies = movies
-                self?.delegate?.updateMovies(movies: movies)
-            case .failure(let error):
+    private func loadPopularMovies() {
+        Task {
+            do {
+                let movies = try await NetworkManager.shared.fetchPopularMovies()
+                self.allMovies = movies
+                self.delegate?.updateMovies(movies: movies)
+            } catch {
                 print(error)
             }
         }
@@ -70,11 +70,11 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let query = searchController.searchBar.text, !query.isEmpty else { return }
-        networkManager.searchMovies(query: query) { [weak self] result in
-            switch result {
-            case .success(let movies):
-                self?.delegate?.updateMovies(movies: movies)
-            case .failure(let error):
+        Task {
+            do {
+                let movies = try await NetworkManager.shared.searchMovies(query: query)
+                self.delegate?.updateMovies(movies: movies)
+            } catch {
                 print(error)
             }
         }
