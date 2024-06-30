@@ -7,9 +7,6 @@
 
 import UIKit
 
-// naming
-// вопросы
-
 protocol SearchViewControllerDelegate: AnyObject {
     func updateMovies(movies: [Movie])
 }
@@ -37,6 +34,7 @@ class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupNavigationBar()
         setupView()
         setupConstraints()
