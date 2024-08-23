@@ -13,7 +13,7 @@ protocol SearchViewControllerDelegate: AnyObject {
 
 class SearchViewController: UIViewController {
     
-    private let networkManager = NetworkManager.shared
+    private let movieManager = MovieManager()
     weak var delegate: SearchViewControllerDelegate?
     
     private var allMovies: [Movie] = []
@@ -56,7 +56,7 @@ class SearchViewController: UIViewController {
     private func loadPopularMovies() {
         Task {
             do {
-                let movies = try await NetworkManager.shared.fetchPopularMovies()
+                let movies = try await movieManager.fetchPopularMovies()
                 self.allMovies = movies
                 self.delegate?.updateMovies(movies: movies)
             } catch {
@@ -72,7 +72,7 @@ extension SearchViewController: UISearchResultsUpdating {
         guard let query = searchController.searchBar.text, !query.isEmpty else { return }
         Task {
             do {
-                let movies = try await NetworkManager.shared.searchMovies(query: query)
+                let movies = try await movieManager.searchMovies(query: query)
                 self.delegate?.updateMovies(movies: movies)
             } catch {
                 print(error)

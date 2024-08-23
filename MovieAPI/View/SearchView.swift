@@ -49,7 +49,7 @@ class SearchView: UIView {
 //MARK: - UITableViewDataSource
 extension SearchView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movies.count
+        movies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -71,8 +71,7 @@ extension SearchView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let selectedMovie = movies[indexPath.row]
-        delegate?.didSelectMovie(selectedMovie)
+        delegate?.didSelectMovie(movies[indexPath.row])
     }
 }
 
